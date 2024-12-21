@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>project3_report.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="opengauss-%E4%B8%8E-postgresql-%E5%9C%A8mac-apple-m1%E4%B8%8A%E7%9A%84%E5%B7%AE%E5%BC%82%E5%88%86%E6%9E%90">OpenGauss 与 PostgreSQL 在Mac Apple M1上的差异分析</h1>
+<h2 id="%E6%91%98%E8%A6%81">摘要</h2>
+<p>OpenGauss 是由华为公司开发的一款开源数据库，它是基于 PostgreSQL 二次开发的。华为公司称 OpenGauss 是一款<strong>高性能，高可用，高安全，易运维</strong>的企业级开源关系型数据库，特别适用于复杂的数据密集型场景。本项目重点关注 OpenGauss DB 与 PostgreSQL 的性能差异，设计了一系列测试场景，使用<strong>Sysbench</strong>工具进行实验。同时，本项目还会讨论 OpenGauss 的安全特性，分析其优势。</p>
+<p>关键词：OpenGauss，PostgreSQL，数据库性能。</p>
+<p>测试代码及结果仓库：<a href="https://github.com/EarendelH/DatabaseH_project3">EarendelH/DatabaseH_project3</a></p>
+<h2 id="%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8F%8A%E5%B7%A5%E5%85%B7">测试环境及工具</h2>
+<ul>
+<li><strong>测试环境</strong>：<strong>Docker</strong>
+<ul>
+<li><strong>CPU</strong>：Apple M1 8-core</li>
+<li><strong>内存</strong>：8GB</li>
+<li><strong>操作系统</strong>：Debian GNU/Linux 10 (buster)</li>
+<li><strong>Architecture</strong>: aarch64</li>
+<li><strong>OpenGauss数据库版本</strong>：OpenGauss 3.0.0</li>
+<li><strong>PostgreSQL数据库版本</strong>：PostgreSQL 11.16</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>说明：为了保持测试环境的一致性，我在搭载了 OpenGauss 3.0.0 的 Docker 容器中额外安装了 Postgresql 进行测试，因此Postgresql的版本为11.6而不是最新的16。</p>
+</blockquote>
+<ul>
+<li><strong>测试工具</strong>：<strong>Sysbench</strong>
+<ul>
+<li>Sysbench 是一款开源的多线程性能测试工具，它支持多种数据库引擎，包括 MySQL、PostgreSQL等。Sysbench 可以模拟多种负载场景，如 OLTP、只读、只写等，是测试数据库性能的常用工具。本项目将会使用 Sysbench对两种数据库进行压测。</li>
+</ul>
+</li>
+</ul>
+<h2 id="%E8%AF%84%E4%BC%B0%E6%A0%87%E5%87%86">评估标准</h2>
+<ol>
+<li><strong>TPS</strong>：Transactions Per Second，每秒事务数，表示数据库处理能力的指标。</li>
+<li><strong>QPS</strong>：Queries Per Second，每秒查询数，表示数据库查询能力的指标。</li>
+<li><strong>Latency 95%</strong>：95% 响应时间，可以表示大部分请求的响应时间。可以用来评估数据库的通信效率。</li>
+<li><strong>Threads fairness</strong>: 表示多线程公平性，方差值越接近0表示越公平。可以用来评估数据库的并发处理能力。</li>
+</ol>
+<h2 id="%E5%9C%BA%E6%99%AF%E5%8F%8A%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C">场景及测试结果</h2>
+<p>本项目设计了<strong>九个</strong>测试场景，<strong>数据库中的表大小为100万行</strong>，符合大型数据库的特点。</p>
+<p>由于测试机器cpu有8个计算核心，因此设计了表数量2，4，8，20四种情况，分别表示小于、等于、大于核心数的情况，以测试数据库的并发处理能力。</p>
+<p>以下图表只选择了一部分测试结果，所有测试日志均已上传<a href="https://github.com/EarendelH/DatabaseH_project3">github仓库</a>，可以查看具体的测试结果。</p>
+<p>测试结果汇总为三个/四个折线图，分别代表TPS、QPS、Latency 95%、Threads events(每个线程上的任务数的平均值以及方差)。在某些场景中TPS=QPS，会只有三个折线图。绘图数据及代码在仓库中的<code>plot.ipynb</code>文件中。</p>
+<p><strong>红色代表OpenGauss，蓝色代表Postgresql。</strong></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E4%B8%80%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5">场景一：大规模批量插入</h3>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-2.png" alt="alt text"></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E4%BA%8Coltp-update-by-index">场景二：OLTP Update by index</h3>
+<blockquote>
+<p>OLTP 是一种常见的负载场景,具有高并发、高频率的特点，例如银行交易系统、电商系统等，符合本次项目的测试目的。</p>
+</blockquote>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-4.png" alt="alt text"></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E4%B8%89oltp-delete">场景三：OLTP Delete</h3>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-5.png" alt="alt text"></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E5%9B%9Boltp-read-only-%E5%8F%AA%E8%AF%BB%E4%BA%8B%E5%8A%A1">场景四：OLTP Read-Only 只读事务</h3>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-6.png" alt="alt text"></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E4%BA%94oltp-write-only-%E5%8F%AA%E5%86%99%E4%BA%8B%E5%8A%A1">场景五：OLTP Write-Only 只写事务</h3>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-7.png" alt="alt text"></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E5%85%ADoltp-read-write-%E8%AF%BB%E5%86%99%E4%BA%8B%E5%8A%A1">场景六：OLTP Read-Write 读写事务</h3>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-8.png" alt="alt text"></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E4%B8%83select-random-points-%E6%9F%A5%E8%AF%A2%E5%8D%95%E7%82%B9%E9%9A%8F%E6%9C%BA%E6%95%B0%E6%8D%AE">场景七：select random points 查询单点随机数据</h3>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-9.png" alt="alt text"></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E5%85%ABselect-random-ranges-%E6%9F%A5%E8%AF%A2%E9%9A%8F%E6%9C%BA%E8%8C%83%E5%9B%B4%E6%95%B0%E6%8D%AE">场景八：select random ranges 查询随机范围数据</h3>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-10.png" alt="alt text"></p>
+<h3 id="%E5%9C%BA%E6%99%AF%E4%B9%9D%E9%95%BF%E6%97%B6%E9%97%B4%E6%80%A7%E8%83%BD%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95">场景九：长时间性能压力测试</h3>
+<p>以oltp_read_write运行10分钟为例</p>
+<p><img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image-11.png" alt="alt text"></p>
+<h3 id="%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94">性能对比</h3>
+<p>遗憾的是，从测试结果来看，<strong>OpenGauss的性能在大部分场景下都不如PostgreSQL</strong>。除了范围查询外，在设计的所有场景中OpenGauss的<strong>TPS、QPS均明显低于</strong>Postgresql，<strong>延迟也更高</strong>。并行性能上，虽然OpenGauss的<strong>方差值更小，但在平均值上远低于Postgresql</strong>，这在一定程度上说明<strong>OpenGauss的并发处理能力是不如Postgresql的</strong>。</p>
+<p>在范围查询场景中，OpenGauss的性能表现更好，TPS、QPS、延迟都优于Postgresql。这可能是因为OpenGauss在设计时的一些优化策略，例如<strong>索引优化</strong>、使得OpenGauss在范围查询场景下表现更好。但是与之相矛盾的Updata by index场景中，说明<strong>精确查询上的低性能并不是范围查询优化所能弥补的</strong>。此场景中OpenGauss的<strong>并行任务分配方差也十分高，发挥并不稳定</strong>。</p>
+<p>在长时间性能压力测试中，OpenGauss的性能表现也不如Postgresql，TPS、QPS、延迟都明显高于Postgresql。</p>
+<p>值得一提的是在大部分情况中，<strong>OpenGauss的性能波动幅度相比于Postgresql更小</strong>，某种程度上说明OpenGauss的<strong>稳定性可能更好</strong>。</p>
+<h2 id="opengauss-%E7%9B%B8%E6%AF%94%E8%BE%83%E4%BA%8E-postgresql-%E7%9A%84%E5%AE%89%E5%85%A8%E7%89%B9%E6%80%A7">OpenGauss 相比较于 PostgreSQL 的安全特性</h2>
+<ol>
+<li>
+<p>密码安全策略：OpenGauss的密码安全策略更加严格，postgresql只需要满足密码长度要求即可，而OpenGauss还需要包含大小写字母、数字、特殊字符等。</p>
+</li>
+<li>
+<p>登录密码检验加密：在配置sysbench进行测试时，<strong>我发现</strong>，对于OpenGauss,其<code>pg_hba.conf</code>文件中的<code>password_encryption</code>参数默认为<code>2</code>,即<strong>使用SHA256加密算法</strong>，而Postgresql默认为<code>1</code>，即使用MD5加密算法。在离散数学的学习中，我们知道<strong>MD5现在已经是可以被破解的，而SHA256则更加安全</strong>。</p>
+</li>
+<li>
+<p>openGauss防篡改账本数据库</p>
+</li>
+</ol>
+<p>OpenGauss引入了防篡改账本数据库功能,在用法上与普通表没有区别，但是在实现上，OpenGauss会在表的每一行数据后面<strong>加上一个哈希值</strong>，从而实现<strong>数据的防篡改以及对数据的全流程进行追踪审计。</strong>
+<img src="file:///Users/earendelh/Documents/Sophomore_First/CS213DB/project3/home_300/project3/project3_report/image.png" alt="alt text"></p>
+<pre class="hljs"><code><div>db=<span class="hljs-comment"># create schema ledger with blockchain;</span>
+db=<span class="hljs-comment"># create table ledger.user(id int, name varchar);</span>
+db=<span class="hljs-comment"># insert into ledger.user values(1, 'alex'), (2, 'bob’);</span>
+db=<span class="hljs-comment"># select *, hash from ledger.user;</span>
+ id | name |       hash
+<span class="hljs-comment">----+------+------------------</span>
+  1 | alex | 1f2e543c580cb8c5
+  2 | bob  | 8fcd74a8a6a4b484
+(2 rows)
+db=<span class="hljs-comment"># select * from blockchain.ledger_user_hist limit 1;</span>
+-[ RECORD 1 ]<span class="hljs-comment">------------------------------</span>
+rec_num  | 0
+hash_ins | 1f2e543c580cb8c5
+hash_del |
+pre_hash | b62faf1967d78a3043a2b4ea5cc075d2
+db=<span class="hljs-comment"># select blocknum, username, starttime, relhash, txcommand from gs_global_chain limit 1;</span>
+-[ RECORD 1 ]<span class="hljs-comment">-----------------------------------------------------</span>
+blocknum  | 28
+username  | omm
+starttime | 2024-12-10 11:20:34.202908+08
+relhash   | aefbc8e4feb16d49
+txcommand | <span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> ledger.user <span class="hljs-keyword">values</span>(<span class="hljs-number">1</span>, <span class="hljs-string">'alex'</span>), (<span class="hljs-number">2</span>, <span class="hljs-string">'bob'</span>);
+
+
+</div></code></pre>
+<p>防篡改表的数据变更历史记录</p>
+<pre class="hljs"><code><div>
+           starttime           |                        txcommand                                   |  data_ins  | data_del
+<span class="hljs-comment">-------------------------------+--------------------------------------------------------------------+------------+--------------</span>
+ 2024-12-12 11:22:22.168519+08 | <span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> ledger.t1 <span class="hljs-keyword">values</span>(<span class="hljs-number">1</span>, ‘alex’), (<span class="hljs-number">2</span>, ‘bob’), (<span class="hljs-number">3</span>, ‘peter’); | 1, ‘alex’  | 
+ 2024-12-12 11:22:22.168519+08 | <span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> ledger.t1 <span class="hljs-keyword">values</span>(<span class="hljs-number">1</span>, ‘alex’), (<span class="hljs-number">2</span>, ‘bob’), (<span class="hljs-number">3</span>, ‘peter’); | 2, ‘bob’   | 
+ 2024-12-12 11:22:22.168519+08 | <span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> ledger.t1 <span class="hljs-keyword">values</span>(<span class="hljs-number">1</span>, ‘alex’), (<span class="hljs-number">2</span>, ‘bob’), (<span class="hljs-number">3</span>, ‘peter’); | 3, ‘peter’ |
+ 2024-12-12 11:22:22.170443+08 | <span class="hljs-keyword">update</span> ledger.t1 <span class="hljs-keyword">set</span> <span class="hljs-keyword">name</span> = ‘bob2’ <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span> = <span class="hljs-number">2</span>;                   | 2, ‘bob2’  | 2, ‘bob’ 
+ 2024-12-12 11:22:22.171845+08 | <span class="hljs-keyword">delete</span> <span class="hljs-keyword">from</span> ledger.t1 <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span> = <span class="hljs-number">3</span>;                                |            | 3, ‘peter’
+ 2024-12-12 11:22:22.173231+08 | <span class="hljs-keyword">update</span> ledger.t1 <span class="hljs-keyword">set</span> <span class="hljs-keyword">name</span> = ‘bob3’ <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span> = <span class="hljs-number">2</span>;                   | 2, ‘bob3’  | 2, ‘bob2’
+
+</div></code></pre>
+<h2 id="%E7%BB%93%E8%AE%BA">结论</h2>
+<p>尽管此次项目的目标是测试OpenGauss在哪些方面优于Postgresql，但从大规模的测试结果来看，OpenGauss的性能在大部分场景下其实<strong>不如Postgresql</strong>。或许是因为<strong>OpenGauss是针对华为的鲲鹏处理器以及OpenEuler操作系统进行优化的</strong>，而我的测试环境是在Apple M1芯片上，操作系统是低版本的Debian因此导致了OpenGauss的性能表现不佳。此次使用的OpenGauss版本3.0.0<strong>并不是最新版本</strong>，此外，OpenGauss的文档中也提到了其对于<strong>多cpu进行了NUMA改造</strong>，这也是一个值得测试的方向。由于设备与时间限制，无法进行更多的测试，<strong>期待新版本在华为生态硬件上能够有更好的性能表现</strong>。</p>
+
+</body>
+</html>

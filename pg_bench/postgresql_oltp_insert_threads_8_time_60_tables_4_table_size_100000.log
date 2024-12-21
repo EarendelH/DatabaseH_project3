@@ -1,0 +1,69 @@
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql oltp_insert --pgsql-host=localhost --pgsql-port=5434 --pgsql-user=sbtest --pgsql-password=sbtest --pgsql-db=sbtest --tables=4 --table-size=100000 prepare >> postgresql_oltp_insert_threads_8_time_60_tables_4_table_size_100000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Initializing worker threads...
+
+Creating table 'sbtest3'...
+Creating table 'sbtest4'...
+Creating table 'sbtest2'...
+Inserting 100000 records into 'sbtest3'
+Inserting 100000 records into 'sbtest4'
+Creating table 'sbtest1'...
+Inserting 100000 records into 'sbtest2'
+Inserting 100000 records into 'sbtest1'
+Creating a secondary index on 'sbtest4'...
+Creating a secondary index on 'sbtest2'...
+Creating a secondary index on 'sbtest3'...
+Creating a secondary index on 'sbtest1'...
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql oltp_insert --pgsql-host=localhost --pgsql-port=5434 --pgsql-user=sbtest --pgsql-password=sbtest --pgsql-db=sbtest --tables=4 --table-size=100000 run >> postgresql_oltp_insert_threads_8_time_60_tables_4_table_size_100000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Running the test with following options:
+Number of threads: 8
+Report intermediate results every 10 second(s)
+Initializing random number generator from current time
+
+
+Initializing worker threads...
+
+Threads started!
+
+[ 10s ] thds: 8 tps: 12078.59 qps: 12078.59 (r/w/o: 0.00/12078.59/0.00) lat (ms,95%): 1.03 err/s: 0.00 reconn/s: 0.00
+[ 20s ] thds: 8 tps: 9753.84 qps: 9753.84 (r/w/o: 0.00/9753.84/0.00) lat (ms,95%): 1.79 err/s: 0.00 reconn/s: 0.00
+[ 30s ] thds: 8 tps: 13614.71 qps: 13614.71 (r/w/o: 0.00/13614.71/0.00) lat (ms,95%): 0.80 err/s: 0.00 reconn/s: 0.00
+[ 40s ] thds: 8 tps: 13232.28 qps: 13232.28 (r/w/o: 0.00/13232.28/0.00) lat (ms,95%): 0.84 err/s: 0.00 reconn/s: 0.00
+[ 50s ] thds: 8 tps: 12066.46 qps: 12066.46 (r/w/o: 0.00/12066.46/0.00) lat (ms,95%): 0.97 err/s: 0.00 reconn/s: 0.00
+[ 60s ] thds: 8 tps: 12414.96 qps: 12414.96 (r/w/o: 0.00/12414.96/0.00) lat (ms,95%): 0.95 err/s: 0.00 reconn/s: 0.00
+SQL statistics:
+    queries performed:
+        read:                            0
+        write:                           731673
+        other:                           0
+        total:                           731673
+    transactions:                        731673 (12185.97 per sec.)
+    queries:                             731673 (12185.97 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          60.0412s
+    total number of events:              731673
+
+Latency (ms):
+         min:                                    0.20
+         avg:                                    0.65
+         max:                                  176.66
+         95th percentile:                        1.03
+         sum:                               478542.48
+
+Threads fairness:
+    events (avg/stddev):           91459.1250/63.82
+    execution time (avg/stddev):   59.8178/0.01
+
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql oltp_delete --pgsql-host=localhost --pgsql-port=5434 --pgsql-user=sbtest --pgsql-password=sbtest --pgsql-db=sbtest --tables=4 --table-size=100000 cleanup>> postgresql_oltp_insert_threads_8_time_60_tables_4_table_size_100000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Dropping table 'sbtest1'...
+Dropping table 'sbtest2'...
+Dropping table 'sbtest3'...
+Dropping table 'sbtest4'...

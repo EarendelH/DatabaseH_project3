@@ -1,0 +1,69 @@
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql select_random_ranges --pgsql-host=localhost --pgsql-port=5432 --pgsql-user=sbtest --pgsql-password=Wzh@0401 --pgsql-db=sbtest --tables=4 --table-size=1000000 prepare >> opengauss_select_random_ranges_threads_8_time_60_tables_4_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Initializing worker threads...
+
+Creating table 'sbtest2'...
+Creating table 'sbtest3'...
+Creating table 'sbtest1'...
+Creating table 'sbtest4'...
+Inserting 1000000 records into 'sbtest1'
+Inserting 1000000 records into 'sbtest2'
+Inserting 1000000 records into 'sbtest3'
+Inserting 1000000 records into 'sbtest4'
+Creating a secondary index on 'sbtest2'...
+Creating a secondary index on 'sbtest4'...
+Creating a secondary index on 'sbtest1'...
+Creating a secondary index on 'sbtest3'...
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql select_random_ranges --pgsql-host=localhost --pgsql-port=5432 --pgsql-user=sbtest --pgsql-password=Wzh@0401 --pgsql-db=sbtest --tables=4 --table-size=1000000 run >> opengauss_select_random_ranges_threads_8_time_60_tables_4_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Running the test with following options:
+Number of threads: 8
+Report intermediate results every 10 second(s)
+Initializing random number generator from current time
+
+
+Initializing worker threads...
+
+Threads started!
+
+[ 10s ] thds: 8 tps: 9101.11 qps: 9101.11 (r/w/o: 9101.11/0.00/0.00) lat (ms,95%): 2.35 err/s: 0.00 reconn/s: 0.00
+[ 20s ] thds: 8 tps: 12436.90 qps: 12436.90 (r/w/o: 12436.90/0.00/0.00) lat (ms,95%): 1.70 err/s: 0.00 reconn/s: 0.00
+[ 30s ] thds: 8 tps: 11924.20 qps: 11924.20 (r/w/o: 11924.20/0.00/0.00) lat (ms,95%): 1.82 err/s: 0.00 reconn/s: 0.00
+[ 40s ] thds: 8 tps: 11377.12 qps: 11377.12 (r/w/o: 11377.12/0.00/0.00) lat (ms,95%): 1.89 err/s: 0.00 reconn/s: 0.00
+[ 50s ] thds: 8 tps: 11411.11 qps: 11411.11 (r/w/o: 11411.11/0.00/0.00) lat (ms,95%): 1.76 err/s: 0.00 reconn/s: 0.00
+[ 60s ] thds: 8 tps: 13733.07 qps: 13733.07 (r/w/o: 13733.07/0.00/0.00) lat (ms,95%): 1.50 err/s: 0.00 reconn/s: 0.00
+SQL statistics:
+    queries performed:
+        read:                            699859
+        write:                           0
+        other:                           0
+        total:                           699859
+    transactions:                        699859 (11660.58 per sec.)
+    queries:                             699859 (11660.58 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          60.0178s
+    total number of events:              699859
+
+Latency (ms):
+         min:                                    0.10
+         avg:                                    0.68
+         max:                                  153.26
+         95th percentile:                        1.79
+         sum:                               478668.73
+
+Threads fairness:
+    events (avg/stddev):           87482.3750/29776.95
+    execution time (avg/stddev):   59.8336/0.05
+
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql oltp_delete --pgsql-host=localhost --pgsql-port=5432 --pgsql-user=sbtest --pgsql-password=Wzh@0401 --pgsql-db=sbtest --tables=4 --table-size=1000000 cleanup>> opengauss_select_random_ranges_threads_8_time_60_tables_4_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Dropping table 'sbtest1'...
+Dropping table 'sbtest2'...
+Dropping table 'sbtest3'...
+Dropping table 'sbtest4'...

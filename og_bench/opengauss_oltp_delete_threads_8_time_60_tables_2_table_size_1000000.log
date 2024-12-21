@@ -1,0 +1,61 @@
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql oltp_delete --pgsql-host=localhost --pgsql-port=5432 --pgsql-user=sbtest --pgsql-password=Wzh@0401 --pgsql-db=sbtest --tables=2 --table-size=1000000 prepare >> opengauss_oltp_delete_threads_8_time_60_tables_2_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Initializing worker threads...
+
+Creating table 'sbtest1'...
+Creating table 'sbtest2'...
+Inserting 1000000 records into 'sbtest1'
+Inserting 1000000 records into 'sbtest2'
+Creating a secondary index on 'sbtest1'...
+Creating a secondary index on 'sbtest2'...
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql oltp_delete --pgsql-host=localhost --pgsql-port=5432 --pgsql-user=sbtest --pgsql-password=Wzh@0401 --pgsql-db=sbtest --tables=2 --table-size=1000000 run >> opengauss_oltp_delete_threads_8_time_60_tables_2_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Running the test with following options:
+Number of threads: 8
+Report intermediate results every 10 second(s)
+Initializing random number generator from current time
+
+
+Initializing worker threads...
+
+Threads started!
+
+[ 10s ] thds: 8 tps: 8597.42 qps: 8597.42 (r/w/o: 0.00/3502.06/5095.36) lat (ms,95%): 2.91 err/s: 0.00 reconn/s: 0.00
+[ 20s ] thds: 8 tps: 13405.72 qps: 13405.72 (r/w/o: 0.00/3096.61/10309.12) lat (ms,95%): 2.86 err/s: 0.00 reconn/s: 0.00
+[ 30s ] thds: 8 tps: 14746.09 qps: 14746.09 (r/w/o: 0.00/3139.40/11606.68) lat (ms,95%): 2.81 err/s: 0.00 reconn/s: 0.00
+[ 40s ] thds: 8 tps: 14181.96 qps: 14181.96 (r/w/o: 0.00/2862.49/11319.47) lat (ms,95%): 2.86 err/s: 0.00 reconn/s: 0.00
+[ 50s ] thds: 8 tps: 15150.14 qps: 15150.14 (r/w/o: 0.00/2885.08/12265.06) lat (ms,95%): 2.76 err/s: 0.00 reconn/s: 0.00
+[ 60s ] thds: 8 tps: 14920.86 qps: 14920.86 (r/w/o: 0.00/2660.38/12260.48) lat (ms,95%): 2.81 err/s: 0.00 reconn/s: 0.00
+SQL statistics:
+    queries performed:
+        read:                            0
+        write:                           181473
+        other:                           628592
+        total:                           810065
+    transactions:                        810065 (13498.50 per sec.)
+    queries:                             810065 (13498.50 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          60.0106s
+    total number of events:              810065
+
+Latency (ms):
+         min:                                    0.02
+         avg:                                    0.59
+         max:                                 1126.72
+         95th percentile:                        2.86
+         sum:                               479494.27
+
+Threads fairness:
+    events (avg/stddev):           101258.1250/694.81
+    execution time (avg/stddev):   59.9368/0.00
+
+sysbench --threads=8 --time=60 --report-interval=10 --db-driver=pgsql oltp_delete --pgsql-host=localhost --pgsql-port=5432 --pgsql-user=sbtest --pgsql-password=Wzh@0401 --pgsql-db=sbtest --tables=2 --table-size=1000000 cleanup>> opengauss_oltp_delete_threads_8_time_60_tables_2_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Dropping table 'sbtest1'...
+Dropping table 'sbtest2'...

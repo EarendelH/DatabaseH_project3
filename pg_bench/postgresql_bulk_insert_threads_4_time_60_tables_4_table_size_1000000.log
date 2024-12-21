@@ -1,0 +1,59 @@
+sysbench --threads=4 --time=60 --report-interval=10 --db-driver=pgsql bulk_insert --pgsql-host=localhost --pgsql-port=5434 --pgsql-user=sbtest --pgsql-password=sbtest --pgsql-db=sbtest --tables=4 --table-size=1000000 prepare >> postgresql_bulk_insert_threads_4_time_60_tables_4_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Creating table 'sbtest1'...
+Creating table 'sbtest2'...
+Creating table 'sbtest3'...
+Creating table 'sbtest4'...
+sysbench --threads=4 --time=60 --report-interval=10 --db-driver=pgsql bulk_insert --pgsql-host=localhost --pgsql-port=5434 --pgsql-user=sbtest --pgsql-password=sbtest --pgsql-db=sbtest --tables=4 --table-size=1000000 run >> postgresql_bulk_insert_threads_4_time_60_tables_4_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Running the test with following options:
+Number of threads: 4
+Report intermediate results every 10 second(s)
+Initializing random number generator from current time
+
+
+Initializing worker threads...
+
+Threads started!
+
+[ 10s ] thds: 4 tps: 606493.22 qps: 18.79 (r/w/o: 0.00/18.79/0.00) lat (ms,95%): 0.00 err/s: 0.00 reconn/s: 0.00
+[ 20s ] thds: 4 tps: 786037.51 qps: 27.00 (r/w/o: 0.00/27.00/0.00) lat (ms,95%): 0.00 err/s: 0.00 reconn/s: 0.00
+[ 30s ] thds: 4 tps: 806181.69 qps: 27.60 (r/w/o: 0.00/27.60/0.00) lat (ms,95%): 0.00 err/s: 0.00 reconn/s: 0.00
+[ 40s ] thds: 4 tps: 873753.43 qps: 30.00 (r/w/o: 0.00/30.00/0.00) lat (ms,95%): 0.00 err/s: 0.00 reconn/s: 0.00
+[ 50s ] thds: 4 tps: 821342.49 qps: 28.20 (r/w/o: 0.00/28.20/0.00) lat (ms,95%): 0.00 err/s: 0.00 reconn/s: 0.00
+[ 60s ] thds: 4 tps: 694727.14 qps: 26.10 (r/w/o: 0.00/26.10/0.00) lat (ms,95%): 0.00 err/s: 0.00 reconn/s: 0.00
+SQL statistics:
+    queries performed:
+        read:                            0
+        write:                           1585
+        other:                           0
+        total:                           1585
+    transactions:                        45886553 (763314.49 per sec.)
+    queries:                             1585   (26.37 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          60.1138s
+    total number of events:              45886553
+
+Latency (ms):
+         min:                                    0.00
+         avg:                                    0.00
+         max:                                  508.52
+         95th percentile:                        0.00
+         sum:                               228059.56
+
+Threads fairness:
+    events (avg/stddev):           11471638.2500/21734.67
+    execution time (avg/stddev):   57.0149/0.02
+
+sysbench --threads=4 --time=60 --report-interval=10 --db-driver=pgsql oltp_delete --pgsql-host=localhost --pgsql-port=5434 --pgsql-user=sbtest --pgsql-password=sbtest --pgsql-db=sbtest --tables=4 --table-size=1000000 cleanup >> postgresql_bulk_insert_threads_4_time_60_tables_4_table_size_1000000.log
+sysbench 1.0.20 (using bundled LuaJIT 2.1.0-beta2)
+
+Dropping table 'sbtest1'...
+Dropping table 'sbtest2'...
+Dropping table 'sbtest3'...
+Dropping table 'sbtest4'...
