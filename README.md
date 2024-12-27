@@ -137,7 +137,7 @@ postgres=#show hba_file；
 (1 row)
 ```
 
-同样的方法修改`pg_hba.conf`文件，不过是将`peer`修改为`md5`或`trust`，这样sysbench才能够连接到数据库。
+同样的方法修改`pg_hba.conf`文件，不过只需要将`peer`修改为`md5`或`trust`。
 
 ![alt text](README/image-2.png)
 
@@ -166,7 +166,9 @@ sysbench --threads=8 --time=30 --report-interval=1 --db-driver=pgsql select_rand
 
 ## sysbench测试
 
-sysbench已经设置了许多测试场景脚本，使用lua语言编写，可以直接调用。有能力者也可以自己编写测试脚本，设置不同参数。
+sysbench已经设置了许多测试场景脚本，使用lua语言编写，可以直接调用。懂lua编程的同学也可以自己编写测试脚本，设置不同参数。
+
+>测试时请检查测试命令中的参数是否正确，如数据库名称、用户、密码等。
 
 脚本位置`/usr/share/sysbench/*.lua`。
 
@@ -185,7 +187,7 @@ sysbench已经设置了许多测试场景脚本，使用lua语言编写，可以
 | select_random_points.lua    | 随机点查询                |
 | select_random_ranges.lua    | 随机范围查询              |
 
-我已经在项目中编写了批量测试脚本`job.sh`和`bulk.sh`，可以自行修改参数并使用。
+我已经在项目中编写了批量测试脚本`job.sh`和`bulk.sh`，在`pg_bench`和`og_bench`文件夹中，可以自行修改参数并使用。
 
 ```bash
 job_names=("oltp_insert" "oltp_point_select" "oltp_update_non_index" "oltp_update_index " "oltp_delete " "oltp_read_only" "oltp_write_only" "oltp_read_write" "select_random_points" "select_random_ranges") #使用的测试场景
@@ -198,7 +200,7 @@ table_size=1000000 #表大小
 
 ## 测试结果
 
-测试结果日志在`pg_bench`和`og_bench`文件夹中，可以查看。
+测试结果日志以存储在`pg_bench`和`og_bench`文件夹中。
 
 具体的测试结果和分析请查看[测试报告](./project3_report.pdf)。
 
