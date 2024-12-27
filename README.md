@@ -1,10 +1,10 @@
 # OpenGauss 与 PostgreSQL 在Mac Apple M1上的差异分析
 
-## 摘要
+---
 
 OpenGauss 是由华为公司开发的一款开源数据库，它是基于 PostgreSQL 二次开发的。华为公司称 OpenGauss 是一款**高性能，高可用，高安全，易运维**的企业级开源关系型数据库，特别适用于复杂的数据密集型场景。本项目重点关注 OpenGauss DB 与 PostgreSQL 的性能差异，设计了一系列测试场景，使用**Sysbench**工具进行实验。同时，本项目还会讨论 OpenGauss 的安全特性，分析其优势。
 
-关键词：OpenGauss，PostgreSQL，数据库性能。
+---
 
 测试代码及结果仓库：[EarendelH/DatabaseH_project3](https://github.com/EarendelH/DatabaseH_project3)
 
@@ -23,129 +23,185 @@ OpenGauss 是由华为公司开发的一款开源数据库，它是基于 Postgr
 - **测试工具**：**Sysbench**
   - Sysbench 是一款开源的多线程性能测试工具，它支持多种数据库引擎，包括 MySQL、PostgreSQL等。Sysbench 可以模拟多种负载场景，如 OLTP、只读、只写等，是测试数据库性能的常用工具。本项目将会使用 Sysbench对两种数据库进行压测。
 
-## 评估标准
+## 使用docker环境
 
-1. **TPS**：Transactions Per Second，每秒事务数，表示数据库处理能力的指标。
-2. **QPS**：Queries Per Second，每秒查询数，表示数据库查询能力的指标。
-3. **Latency 95%**：95% 响应时间，可以表示大部分请求的响应时间。可以用来评估数据库的通信效率。
-4. **Threads fairness**: 表示多线程公平性，方差值越接近0表示越公平。可以用来评估数据库的并发处理能力。
+>特别注意：在Apple M系列芯片上，OpenGauss的版本不能超过3.0.0，否则会出现`cgroup`的相关问题。
 
-## 场景及测试结果
-
-本项目设计了**九个**测试场景，**数据库中的表大小为100万行**，符合大型数据库的特点。
-
-由于测试机器cpu有8个计算核心，因此设计了表数量2，4，8，20四种情况，分别表示小于、等于、大于核心数的情况，以测试数据库的并发处理能力。
-
-以下图表只选择了一部分测试结果，所有测试日志均已上传[github仓库](https://github.com/EarendelH/DatabaseH_project3)，可以查看具体的测试结果。
-
-测试结果汇总为三个/四个折线图，分别代表TPS、QPS、Latency 95%、Threads events(每个线程上的任务数的平均值以及方差)。在某些场景中TPS=QPS，会只有三个折线图。绘图数据及代码在仓库中的`plot.ipynb`文件中。
-
-**红色代表OpenGauss，蓝色代表Postgresql。**
-
-### 场景一：大规模批量插入
-
-![alt text](project3_report/image-2.png)
-
-### 场景二：OLTP Update by index
-
->OLTP 是一种常见的负载场景,具有高并发、高频率的特点，例如银行交易系统、电商系统等，符合本次项目的测试目的。
-
-![alt text](project3_report/image-4.png)
-
-### 场景三：OLTP Delete
-
-![alt text](project3_report/image-5.png)
-
-### 场景四：OLTP Read-Only 只读事务
-
-![alt text](project3_report/image-6.png)
-
-### 场景五：OLTP Write-Only 只写事务
-
-![alt text](project3_report/image-7.png)
-
-### 场景六：OLTP Read-Write 读写事务
-
-![alt text](project3_report/image-8.png)
-
-### 场景七：select random points 查询单点随机数据
-
-![alt text](project3_report/image-9.png)
-
-### 场景八：select random ranges 查询随机范围数据
-
-![alt text](project3_report/image-10.png)
-
-### 场景九：长时间性能压力测试 
-
-以oltp_read_write运行10分钟为例
-
-![alt text](project3_report/image-11.png)
-
-### 性能对比
-
-遗憾的是，从测试结果来看，**OpenGauss的性能在大部分场景下都不如PostgreSQL**。除了范围查询外，在设计的所有场景中OpenGauss的**TPS、QPS均明显低于**Postgresql，**延迟也更高**。并行性能上，虽然OpenGauss的**方差值更小，但在平均值上远低于Postgresql**，这在一定程度上说明**OpenGauss的并发处理能力是不如Postgresql的**。
-
-在范围查询场景中，OpenGauss的性能表现更好，TPS、QPS、延迟都优于Postgresql。这可能是因为OpenGauss在设计时的一些优化策略，例如**索引优化**、使得OpenGauss在范围查询场景下表现更好。但是与之相矛盾的Updata by index场景中，说明**精确查询上的低性能并不是范围查询优化所能弥补的**。此场景中OpenGauss的**并行任务分配方差也十分高，发挥并不稳定**。
-
-在长时间性能压力测试中，OpenGauss的性能表现也不如Postgresql，TPS、QPS、延迟都明显高于Postgresql。
-
-值得一提的是在大部分情况中，**OpenGauss的性能波动幅度相比于Postgresql更小**，某种程度上说明OpenGauss的**稳定性可能更好**。
-
-## OpenGauss 相比较于 PostgreSQL 的安全特性
-
-1. 密码安全策略：OpenGauss的密码安全策略更加严格，postgresql只需要满足密码长度要求即可，而OpenGauss还需要包含大小写字母、数字、特殊字符等。
-
-2. 登录密码检验加密：在配置sysbench进行测试时，**我发现**，对于OpenGauss,其`pg_hba.conf`文件中的`password_encryption`参数默认为`2`,即**使用SHA256加密算法**，而Postgresql默认为`1`，即使用MD5加密算法。在离散数学的学习中，我们知道**MD5现在已经是可以被破解的，而SHA256则更加安全**。
-
-3. openGauss防篡改账本数据库
-
-OpenGauss引入了防篡改账本数据库功能,在用法上与普通表没有区别，但是在实现上，OpenGauss会在表的每一行数据后面**加上一个哈希值**，从而实现**数据的防篡改以及对数据的全流程进行追踪审计。**
-![alt text](project3_report/image.png)
-
-```sql
-db=# create schema ledger with blockchain;
-db=# create table ledger.user(id int, name varchar);
-db=# insert into ledger.user values(1, 'alex'), (2, 'bob’);
-db=# select *, hash from ledger.user;
- id | name |       hash
-----+------+------------------
-  1 | alex | 1f2e543c580cb8c5
-  2 | bob  | 8fcd74a8a6a4b484
-(2 rows)
-db=# select * from blockchain.ledger_user_hist limit 1;
--[ RECORD 1 ]------------------------------
-rec_num  | 0
-hash_ins | 1f2e543c580cb8c5
-hash_del |
-pre_hash | b62faf1967d78a3043a2b4ea5cc075d2
-db=# select blocknum, username, starttime, relhash, txcommand from gs_global_chain limit 1;
--[ RECORD 1 ]-----------------------------------------------------
-blocknum  | 28
-username  | omm
-starttime | 2024-12-10 11:20:34.202908+08
-relhash   | aefbc8e4feb16d49
-txcommand | insert into ledger.user values(1, 'alex'), (2, 'bob');
-
+```bash
+docker run --name opengauss_300 --privileged=true \
+ -d -e GS_PASSWORD=<Your password> \ #openGauss password 必须包含大小写字母、数字、特殊字符，且长度不小于8位，如：'Test@1234'
+ -v /Users/root/opengauss_300:/root -u root \
+ -p 15432:5432 \
+ enmotech/opengauss:3.0.0
 
 ```
 
-防篡改表的数据变更历史记录
+成功拉取镜像后，可以通过以下命令进入容器并启动opengauss：
 
-```sql
-
-           starttime           |                        txcommand                                   |  data_ins  | data_del
--------------------------------+--------------------------------------------------------------------+------------+--------------
- 2024-12-12 11:22:22.168519+08 | insert into ledger.t1 values(1, ‘alex’), (2, ‘bob’), (3, ‘peter’); | 1, ‘alex’  | 
- 2024-12-12 11:22:22.168519+08 | insert into ledger.t1 values(1, ‘alex’), (2, ‘bob’), (3, ‘peter’); | 2, ‘bob’   | 
- 2024-12-12 11:22:22.168519+08 | insert into ledger.t1 values(1, ‘alex’), (2, ‘bob’), (3, ‘peter’); | 3, ‘peter’ |
- 2024-12-12 11:22:22.170443+08 | update ledger.t1 set name = ‘bob2’ where id = 2;                   | 2, ‘bob2’  | 2, ‘bob’ 
- 2024-12-12 11:22:22.171845+08 | delete from ledger.t1 where id = 3;                                |            | 3, ‘peter’
- 2024-12-12 11:22:22.173231+08 | update ledger.t1 set name = ‘bob3’ where id = 2;                   | 2, ‘bob3’  | 2, ‘bob2’
+```bash
+docker exec -it opengauss_300 bash
+su omm
+gsql 
 
 ```
 
-## 结论
+## 安装PostgreSQL
 
-尽管此次项目的目标是测试OpenGauss在哪些方面优于Postgresql，但从大规模的测试结果来看，OpenGauss的性能在大部分场景下其实**不如Postgresql**。或许是因为**OpenGauss是针对华为的鲲鹏处理器以及OpenEuler操作系统进行优化的**，而我的测试环境是在Apple M1芯片上，操作系统是低版本的Debian因此导致了OpenGauss的性能表现不佳。此次使用的OpenGauss版本3.0.0**并不是最新版本**，此外，OpenGauss的文档中也提到了其对于**多cpu进行了NUMA改造**，这也是一个值得测试的方向。由于设备与时间限制，无法进行更多的测试，**期待新版本在华为生态硬件上能够有更好的性能表现**。
+此docker环境下的软件管理工具为`apt`，但是需要更新，否则会导致找不到软件包的问题。
 
+需要在root用户下执行以下命令，不要切换到omm：
+
+```bash
+
+apt-get update #docker上的镜像源已经被修改，根据网络情况可能会失败，多试几次
+apt-get install postgresql postgresql-client
+
+su postgres
+psql
+
+```
+
+## 安装Sysbench
+
+```bash
+
+apt -y install make automake libtool pkg-config libaio-dev
+apt -y install libpq-dev
+apt-get curl
+curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash
+apt -y install sysbench
+  
+```
+
+## 配置Opengauss
+
+为了使得Sysbench能够连接到OpenGauss和PostgreSQL数据库，需要修改`postgresql.conf`和`pg_hba.conf`文件，使压测工具能够连接数据库。
+
+首先登录omm用户并进入openGauss数据库，找到`pg_hba.conf`文件的路径：
+
+```bash
+omm=#show hba_file；
+              hba_file               
+-------------------------------------
+ /var/lib/opengauss/data/pg_hba.conf
+(1 row)
+```
+
+进入该路径`/var/lib/opengauss/data/`,修改`postgresql.conf`文件，将`password_encryption_type=2`修改为1，同时支持sha256和md5。
+
+![alt text](README/image.png)
+
+>说明：OpenGauss默认的加密方式为仅sha256，即`password_encryption_type=2`，而sysbench不支持sha256加密方式，因此需要修改为md5。
+
+修改`pg_hba.conf`文件，将所有`sha256`或者`scram-sha-256`以及`peer`修改为`md5`或`trust`，这样sysbench才能够连接到数据库。
+
+![alt text](README/image-1.png)
+
+修改完成后，重启数据库：
+
+```bash
+gs_ctl restart -D /var/lib/opengauss/data
+```
+
+在omm用户下登录到数据库，创建一个测试数据库及测试用户：
+
+```sql
+create database sbtest;
+create superuser sbtest with password 'test@1234';
+grant all privileges on database sbtest to sbtest;
+```
+
+配置成功后可以用一下命令测试sysbench能否正常测试
+
+```bash
+sysbench --threads=8 --time=30 --report-interval=1 --db-driver=pgsql select_random_ranges --pgsql-host=localhost --pgsql-port=5432 \
+--pgsql-user=sbtest  --pgsql-password=test@1234  --pgsql-db=sbtest --tables=2 --table-size=1000000 run
+```
+
+## 配置PostgreSQL
+
+进入PostgreSQL数据库，同样的方法找到`pg_hba.conf`文件的路径：
+
+>提醒，如果在安装postgresql后关闭了镜像，再次进入时需要重新启动postgresql服务。
+
+```bash
+service postgresql start
+```
+
+```bash
+
+postgres=#show hba_file；
+              hba_file               
+-------------------------------------
+ /etc/postgresql/11/main/pg_hba.conf
+(1 row)
+```
+
+同样的方法修改`pg_hba.conf`文件，不过是将`peer`修改为`md5`或`trust`，这样sysbench才能够连接到数据库。
+
+![alt text](README/image-2.png)
+
+修改完成后，重启数据库：
+
+```bash
+service postgresql restart
+```
+
+在postgres用户下登录到数据库，创建一个测试数据库及测试用户：
+
+```sql
+create database sbtest;
+create superuser sbtest with password 'sbtest';
+grant all privileges on database sbtest to sbtest;
+```
+
+配置成功后可以用一下命令测试sysbench能否正常测试
+
+```bash
+sysbench --threads=8 --time=30 --report-interval=1 --db-driver=pgsql select_random_ranges --pgsql-host=localhost --pgsql-port=5434 \
+--pgsql-user=sbtest --pgsql-password=sbtest --pgsql-db=sbtest --tables=2 --table-size=1000000 run
+```
+
+>注意：PostgreSQL的默认端口为5434，5432已经被OpenGauss占用。
+
+## sysbench测试
+
+sysbench已经设置了许多测试场景脚本，使用lua语言编写，可以直接调用。有能力者也可以自己编写测试脚本，设置不同参数。
+
+脚本位置`/usr/share/sysbench/*.lua`。
+
+| 脚本名                      | 场景描述                  |
+|-----------------------------|---------------------------|
+| bulk_insert.lua             | 批量插入                  |
+| oltp_insert.lua             | OLTP 插入                 |
+| oltp_point_select.lua       | OLTP 点查询               |
+| oltp_update_non_index.lua   | OLTP 非索引更新           |
+| oltp_update_index.lua       | OLTP 索引更新             |
+| oltp_delete.lua             | OLTP 删除                 |
+| oltp_read_only.lua          | OLTP 只读                 |
+| oltp_write_only.lua         | OLTP 只写                 |
+| oltp_read_write.lua         | OLTP 读写                 |
+| oltp_common.lua             | OLTP 通用                 |
+| select_random_points.lua    | 随机点查询                |
+| select_random_ranges.lua    | 随机范围查询              |
+
+我已经在项目中编写了批量测试脚本`job.sh`和`bulk.sh`，可以自行修改参数并使用。
+
+```bash
+job_names=("oltp_insert" "oltp_point_select" "oltp_update_non_index" "oltp_update_index " "oltp_delete " "oltp_read_only" "oltp_write_only" "oltp_read_write" "select_random_points" "select_random_ranges") #使用的测试场景
+threads=8 #线程数
+time="600" #测试持续时间
+port="5434" #数据库端口
+tables_=(4) #表数，可以设置多个，通过循环批量测试
+table_size=1000000 #表大小
+```
+
+## 测试结果
+
+测试结果日志在`pg_bench`和`og_bench`文件夹中，可以查看。
+
+具体的测试结果和分析请查看[测试报告](./project3_report.pdf)。
+
+## 写在最后
+
+感谢老师和助教的指导，让我学到了很多关于数据库性能测试的知识。同时，也感谢华为公司开源了OpenGauss数据库，此次项目让我受益匪浅。
